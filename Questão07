@@ -1,8 +1,8 @@
-#🔧 1. Obter biblioteca do DHT11 (para ESP-IDF)
+#Obter biblioteca do DHT11 (para ESP-IDF)
 #Uma biblioteca simples que funciona bem com ESP-IDF é a do GitHub:
-#📌 https://github.com/UncleRus/esp-idf-lib
+#https://github.com/UncleRus/esp-idf-lib
 
-#Você pode clonar apenas o driver do DHT:
+#Clonando o driver do DHT:
 
 mkdir -p components/dht
 cd components/dht
@@ -10,7 +10,7 @@ git clone https://github.com/UncleRus/esp-idf-lib.git temp
 mv temp/components/dht/* .
 rm -rf temp
 
-#📄 2. Atualizar os CMakeLists.txt
+#Atualizar os CMakeLists.txt
 #Na raiz do projeto (CMakeLists.txt):
 #Adicione:
 
@@ -26,7 +26,7 @@ idf_component_register(SRCS "main.c"
                        INCLUDE_DIRS "."
                        REQUIRES dht)
 
-#📜 3. Código de exemplo (arquivo main.c)
+#Código de exemplo (arquivo main.c)
 
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
