@@ -1,0 +1,55 @@
+#🔧 1. Obter biblioteca do DHT11 (para ESP-IDF)
+#Uma biblioteca simples que funciona bem com ESP-IDF é a do GitHub:
+#📌 https://github.com/UncleRus/esp-idf-lib
+
+#Você pode clonar apenas o driver do DHT:
+
+mkdir -p components/dht
+cd components/dht
+git clone https://github.com/UncleRus/esp-idf-lib.git temp
+mv temp/components/dht/* .
+rm -rf temp
+
+#📄 2. Atualizar os CMakeLists.txt
+#Na raiz do projeto (CMakeLists.txt):
+#Adicione:
+
+cmake_minimum_required(VERSION 3.5)
+
+include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+project(dht11_example)
+
+#Em main/CMakeLists.txt:
+#Certifique-se de ter:
+
+idf_component_register(SRCS "main.c"
+                       INCLUDE_DIRS "."
+                       REQUIRES dht)
+
+#📜 3. Código de exemplo (arquivo main.c)
+
+#include <stdio.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "dht.h"
+#include "esp_log.h"
+
+#define DHT_GPIO 4  // Use o pino GPIO que você conectou o DHT11
+static const char *TAG = "DHT11_APP";
+
+void app_main(void) {
+    int16_t temperature = 0;
+    int16_t humidity = 0;
+
+    while (1) {
+        if (dht_read_data(DHT_TYPE_DHT11, DHT_GPIO, &humidity, &temperature) == ESP_OK) {
+            ESP_LOGI(TAG, "Temperatura: %d°C, Umidade: %d%%", temperature, humidity);
+        } else {
+            ESP_LOGE(TAG, "Erro ao ler o sensor DHT11");
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(2000));
+    }
+}
+
+
